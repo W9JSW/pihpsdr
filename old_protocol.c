@@ -797,7 +797,7 @@ void ozy_send_buffer() {
     if(active_receiver->random) {
       output_buffer[C3]|=LT2208_RANDOM_ON;
     }
-    if(active_receiver->dither) {
+    if(adc_attenuation[receiver[0]->adc] < 32) {
       output_buffer[C3]|=LT2208_DITHER_ON;
     }
     if(active_receiver->preamp) {
@@ -1021,7 +1021,7 @@ void ozy_send_buffer() {
         if(radio->device==DEVICE_HERMES || radio->device==DEVICE_ANGELIA || radio->device==DEVICE_ORION || radio->device==DEVICE_ORION2) {
           output_buffer[C4]=0x20|adc_attenuation[receiver[0]->adc];
         } else {
-          output_buffer[C4]=0x00;
+          output_buffer[C4]=0x1F & (63 - adc_attenuation[receiver[0]->adc]) ;
         }
         break;
       case 5:
